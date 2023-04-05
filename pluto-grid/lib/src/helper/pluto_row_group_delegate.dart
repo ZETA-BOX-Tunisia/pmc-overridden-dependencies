@@ -45,7 +45,7 @@ abstract class PlutoRowGroupDelegate {
   final countFormat = NumberFormat.compact();
 
   /// {@macro pluto_row_group_on_toggled}
-  final PlutoRowGroupOnToggled? onToggled;
+  PlutoRowGroupOnToggled? onToggled;
 
   /// {@macro pluto_row_group_delegate_type}
   PlutoRowGroupDelegateType get type;
@@ -172,8 +172,7 @@ class PlutoRowGroupTreeDelegate extends PlutoRowGroupDelegate {
   bool isExpandableCell(PlutoCell cell) {
     if (!cell.row.type.isGroup) return false;
     final int checkDepth = showFirstExpandableIcon ? 0 : cell.row.depth;
-    return cell.row.type.isGroup &&
-        resolveColumnDepth(cell.column) == checkDepth;
+    return cell.row.type.isGroup && resolveColumnDepth(cell.column) == checkDepth;
   }
 
   /// {@macro pluto_row_group_delegate_toGroup}
@@ -262,13 +261,11 @@ class PlutoRowGroupByColumnDelegate extends PlutoRowGroupDelegate {
   bool get enabled => visibleColumns.isNotEmpty;
 
   /// Returns a non-hidden column from the column to be grouped.
-  List<PlutoColumn> get visibleColumns =>
-      columns.where((e) => !e.hide).toList();
+  List<PlutoColumn> get visibleColumns => columns.where((e) => !e.hide).toList();
 
   /// {@macro pluto_row_group_delegate_isEditableCell}
   @override
-  bool isEditableCell(PlutoCell cell) =>
-      cell.row.type.isNormal && !isRowGroupColumn(cell.column);
+  bool isEditableCell(PlutoCell cell) => cell.row.type.isNormal && !isRowGroupColumn(cell.column);
 
   /// {@macro pluto_row_group_delegate_isExpandableCell}
   @override
@@ -280,8 +277,7 @@ class PlutoRowGroupByColumnDelegate extends PlutoRowGroupDelegate {
 
   /// Returns whether the column is a grouping column.
   bool isRowGroupColumn(PlutoColumn column) {
-    return visibleColumns.firstWhereOrNull((e) => e.field == column.field) !=
-        null;
+    return visibleColumns.firstWhereOrNull((e) => e.field == column.field) != null;
   }
 
   /// {@macro pluto_row_group_delegate_toGroup}
@@ -295,8 +291,7 @@ class PlutoRowGroupByColumnDelegate extends PlutoRowGroupDelegate {
     final List<PlutoRow> groups = [];
     final List<List<PlutoRow>> groupStack = [];
     final List<PlutoRow> parentStack = [];
-    final List<String> groupFields =
-        visibleColumns.map((e) => e.field).toList();
+    final List<String> groupFields = visibleColumns.map((e) => e.field).toList();
     final List<String> groupKeyStack = [];
     final maxDepth = groupFields.length;
 
@@ -391,9 +386,7 @@ class PlutoRowGroupByColumnDelegate extends PlutoRowGroupDelegate {
     final children = PlutoRowGroupHelper.iterateWithFilter(
       rows.originalList,
       filter: (r) => r.type.isGroup,
-      childrenFilter: (r) => _isFirstChildGroup(r)
-          ? r.type.group.children.originalList.iterator
-          : null,
+      childrenFilter: (r) => _isFirstChildGroup(r) ? r.type.group.children.originalList.iterator : null,
     );
 
     for (final child in children) {
@@ -448,9 +441,7 @@ class PlutoRowGroupByColumnDelegate extends PlutoRowGroupDelegate {
 
     for (var e in sampleRow.cells.entries) {
       cells[e.key] = PlutoCell(
-        value: visibleColumns.firstWhereOrNull((c) => c.field == e.key) != null
-            ? e.value.value
-            : null,
+        value: visibleColumns.firstWhereOrNull((c) => c.field == e.key) != null ? e.value.value : null,
         key: ValueKey('${groupKey}_${e.key}_cell'),
       )
         ..setColumn(e.value.column)
