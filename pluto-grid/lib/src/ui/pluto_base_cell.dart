@@ -191,7 +191,7 @@ class _CellContainerState extends PlutoStateWithChange<_CellContainer> {
       _decoration,
       _boxDecoration(
         hasFocus: stateManager.hasFocus,
-        readOnly: widget.column.checkReadOnly(widget.row, widget.cell),
+        readOnly: widget.cell.readOnly??widget.column.checkReadOnly(widget.row, widget.cell),
         isEditing: stateManager.isEditing,
         isCurrentCell: isCurrentCell,
         isSelectedCell: stateManager.isSelectedCell(

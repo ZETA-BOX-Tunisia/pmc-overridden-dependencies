@@ -244,7 +244,7 @@ mixin TextCellState<T extends TextCell> on State<T> implements TextFieldProps {
     return TextField(
       focusNode: cellFocus,
       controller: _textController,
-      readOnly: widget.column.checkReadOnly(widget.row, widget.cell),
+      readOnly: widget.cell.readOnly ?? widget.column.checkReadOnly(widget.row, widget.cell),
       onChanged: _handleOnChanged,
       onEditingComplete: _handleOnComplete,
       onSubmitted: (_) => _handleOnComplete(),
