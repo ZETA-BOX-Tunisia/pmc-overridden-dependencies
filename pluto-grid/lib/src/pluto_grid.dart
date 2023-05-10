@@ -1261,12 +1261,14 @@ class PlutoGridOnChangedEvent {
   final PlutoRow row;
   final dynamic value;
   final dynamic oldValue;
+  final bool isEmpty;
 
   const PlutoGridOnChangedEvent({
     required this.columnIdx,
     required this.column,
     required this.rowIdx,
     required this.row,
+    required this.isEmpty,
     this.value,
     this.oldValue,
   });
@@ -1276,7 +1278,8 @@ class PlutoGridOnChangedEvent {
     String out = '[PlutoOnChangedEvent] ';
     out += 'ColumnIndex : $columnIdx, RowIndex : $rowIdx\n';
     out += '::: oldValue : $oldValue\n';
-    out += '::: newValue : $value';
+    out += '::: newValue : $value\n';
+    out += '::: isEmpty : $isEmpty';
     return out;
   }
 }

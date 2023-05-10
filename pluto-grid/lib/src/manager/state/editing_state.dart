@@ -225,6 +225,8 @@ mixin EditingState implements IPlutoGridState {
       oldValue: oldValue,
     );
 
+    bool isEmpty=value.toString().isEmpty;
+
     value = castValueByColumnType(value, currentColumn);
 
     if (force == false &&
@@ -248,6 +250,7 @@ mixin EditingState implements IPlutoGridState {
         row: currentRow,
         value: value,
         oldValue: oldValue,
+        isEmpty: isEmpty,
       ));
     }
 
@@ -332,6 +335,8 @@ mixin EditingState implements IPlutoGridState {
           newValue: newValue,
           oldValue: oldValue,
         );
+        bool isEmpty=newValue.toString().isEmpty;
+
 
         newValue = castValueByColumnType(newValue, currentColumn);
 
@@ -356,6 +361,7 @@ mixin EditingState implements IPlutoGridState {
             row: refRows[rowIdx],
             value: newValue,
             oldValue: oldValue,
+            isEmpty: isEmpty,
           ));
         }
 
