@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.18.0
+  intl: ^0.17.0
   rxdart: ^0.27.5
   collection: ^1.16.0
   just_the_tooltip: 0.0.12
