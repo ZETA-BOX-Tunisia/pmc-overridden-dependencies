@@ -239,6 +239,10 @@ mixin TextCellState<T extends TextCell> on State<T> implements TextFieldProps {
   Widget build(BuildContext context) {
     if (widget.stateManager.keepFocus) {
       cellFocus.requestFocus();
+      _textController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: _textController.value.text.length,
+      );
     }
 
     return TextField(
