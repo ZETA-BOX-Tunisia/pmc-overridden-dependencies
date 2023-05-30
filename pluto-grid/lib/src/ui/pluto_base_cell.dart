@@ -282,7 +282,9 @@ class _CellContainerState extends PlutoStateWithChange<_CellContainer> {
       );
     } else {
       return BoxDecoration(
-        color: isGroupedRowCell ? cellColorGroupedRow : (widget.cell.overrideColorCheckbox ?? widget.cell.overridedColor?.withOpacity(0.6)),
+        color: isGroupedRowCell
+            ? cellColorGroupedRow
+            : (widget.cell.overrideColorCheckbox ?? (widget.cell.withOpacity ? widget.cell.overridedColor : widget.cell.overridedColor?.withOpacity(0.6))),
         border: enableCellVerticalBorder
             ? BorderDirectional(
                 end: BorderSide(

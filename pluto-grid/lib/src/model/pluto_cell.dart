@@ -8,6 +8,7 @@ class PlutoCell {
     this.overridedColor,
     this.overrideColorCheckbox,
     this.readOnly,
+    this.withOpacity=false,
     Key? key,
   })  : _key = key ?? UniqueKey(),
         _value = value;
@@ -19,6 +20,7 @@ class PlutoCell {
   Color? overridedColor;
   Color? overrideColorCheckbox;
   bool? readOnly;
+  bool withOpacity;
 
   dynamic _valueForSorting;
 
