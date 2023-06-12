@@ -63,9 +63,7 @@ class PlutoColumnFilterState extends PlutoStateWithChange<PlutoColumnFilter> {
         borderRadius: BorderRadius.zero,
       );
 
-  Color get _textFieldColor => _enabled
-      ? stateManager.configuration.style.cellColorInEditState
-      : stateManager.configuration.style.cellColorInReadOnlyState;
+  Color get _textFieldColor => _enabled ? stateManager.configuration.style.cellColorInEditState : stateManager.configuration.style.cellColorInReadOnlyState;
 
   EdgeInsets get _padding => widget.column.filterPadding ?? stateManager.configuration.style.defaultColumnFilterPadding;
 
@@ -135,8 +133,7 @@ class PlutoColumnFilterState extends PlutoStateWithChange<PlutoColumnFilter> {
     if (keyManager.isKeyUpEvent) {
       return KeyEventResult.handled;
     }
-    final handleMoveDown =
-        (keyManager.isDown || keyManager.isEnter || keyManager.isEsc) && stateManager.refRows.isNotEmpty;
+    final handleMoveDown = (keyManager.isDown || keyManager.isEnter || keyManager.isEsc) && stateManager.refRows.isNotEmpty;
     final handleMoveHorizontal = keyManager.isTab || (_controller.text.isEmpty && keyManager.isHorizontal);
     final skip = !(handleMoveDown || handleMoveHorizontal || keyManager.isF3);
     if (skip) {
@@ -172,9 +169,7 @@ class PlutoColumnFilterState extends PlutoStateWithChange<PlutoColumnFilter> {
       return;
     }
     if (plutoEvent is PlutoGridCannotMoveCurrentCellEvent && plutoEvent.direction.isUp) {
-      var isCurrentColumn = widget.stateManager
-              .refColumns[stateManager.columnIndexesByShowFrozen[plutoEvent.cellPosition.columnIdx!]].key ==
-          widget.column.key;
+      var isCurrentColumn = widget.stateManager.refColumns[stateManager.columnIndexesByShowFrozen[plutoEvent.cellPosition.columnIdx!]].key == widget.column.key;
       if (isCurrentColumn) {
         stateManager.clearCurrentCell(notify: false);
         stateManager.setKeepFocus(false);
@@ -298,9 +293,7 @@ class PlutoColumnFilterState extends PlutoStateWithChange<PlutoColumnFilter> {
         height: stateManager.columnFilterHeight,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: widget.stateManager.rows.isNotEmpty &&
-                    widget.column.backgroundColor != null &&
-                    widget.column.isAllColumnColored
+            color: widget.stateManager.rows.isNotEmpty && widget.column.backgroundColor != null && widget.column.isAllColumnColored
                 ? Color.alphaBlend(widget.column.backgroundColor!.withOpacity(0.6), _colorFilter)
                 : _colorFilter,
             border: BorderDirectional(
@@ -308,158 +301,162 @@ class PlutoColumnFilterState extends PlutoStateWithChange<PlutoColumnFilter> {
               end: style.enableColumnBorderVertical ? BorderSide(color: style.borderColor) : BorderSide.none,
             ),
           ),
-          child: _disabledFilter != null
+          child: _disabledFilter != null || widget.disableFilter
               ? SizedBox()
-              : widget.disableFilter
-                  ? SizedBox()
-                  : Padding(
-                      padding: _padding,
-                      child: Align(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  scrollbarTheme: const ScrollbarThemeData().copyWith(
-                                    thumbColor: MaterialStateProperty.all(Color(0xFF959595)),
-                                    thickness: MaterialStateProperty.all(3),
-                                    showTrackOnHover: true,
-                                    trackColor: MaterialStateProperty.all(Color(0xFFE9E9E9)),
-                                  ),
-                                  hoverColor: Colors.transparent,
-                                ),
-                                child: StatefulBuilder(
-                                  builder: (_, setState) => DropdownButtonHideUnderline(
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton2<String>(
-                                        dropdownPadding: EdgeInsets.all(5).copyWith(right: 10),
-                                        dropdownElevation: 4,
-                                        isExpanded: true,
-                                        isDense: true,
-                                        onMenuStateChange: (isOpen) => setState(() => isfilterMenuOpen = isOpen),
-                                        // TODO add hovering effect and selected color
-                                        items: (widget.column.type is PlutoColumnTypeNumber ? filteringTypesNumber : filteringTypes)
-                                            .map(
-                                              (String value) => DropdownMenuItem(
-                                                value: value,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  mainAxisSize: MainAxisSize.max,
-                                                  children: [
-                                                    if (value == 'Clear All Filters') ...[
-                                                      Container(
-                                                        alignment: Alignment.topCenter,
-                                                        color: Color(0xFFE9E9E9),
-                                                        height: 1,
-                                                      ),
-                                                      SizedBox(height: 5),
-                                                    ],
-                                                    OnHover(
-                                                      builder: (isHovered) => Container(
-                                                        decoration: BoxDecoration(
-                                                          color: isHovered ? Color(0xffACC7DB) : Colors.transparent,
-                                                          borderRadius: BorderRadius.circular(6),
-                                                        ),
-                                                        alignment: Alignment.center,
-                                                        width: double.infinity,
-                                                        height: 40,
-                                                        child: Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 40,
-                                                              child: Align(
-                                                                alignment: Alignment.center,
-                                                                child: _buildFilterIcon(filterType: value),
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              value,
-                                                              style: style.cellTextStyle,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
+              : Padding(
+                  padding: _padding,
+                  child: Align(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                          child: Theme(
+                            data: Theme.of(context).copyWith(
+                              scrollbarTheme: const ScrollbarThemeData().copyWith(
+                                thumbColor: MaterialStateProperty.all(Color(0xFF959595)),
+                                thickness: MaterialStateProperty.all(3),
+                                showTrackOnHover: true,
+                                trackColor: MaterialStateProperty.all(Color(0xFFE9E9E9)),
+                              ),
+                              hoverColor: Colors.transparent,
+                            ),
+                            child: StatefulBuilder(
+                              builder: (_, setState) => DropdownButtonHideUnderline(
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton2<String>(
+                                    dropdownPadding: EdgeInsets.all(5).copyWith(right: 10),
+                                    dropdownElevation: 4,
+                                    isExpanded: true,
+                                    isDense: true,
+                                    onMenuStateChange: (isOpen) => setState(() => isfilterMenuOpen = isOpen),
+                                    // TODO add hovering effect and selected color
+                                    items: (widget.column.type is PlutoColumnTypeNumber ? filteringTypesNumber : filteringTypes)
+                                        .map(
+                                          (String value) => DropdownMenuItem(
+                                            value: value,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                if (value == 'Clear All Filters') ...[
+                                                  Container(
+                                                    alignment: Alignment.topCenter,
+                                                    color: Color(0xFFE9E9E9),
+                                                    height: 1,
+                                                  ),
+                                                  SizedBox(height: 5),
+                                                ],
+                                                OnHover(
+                                                  builder: (isHovered) => Container(
+                                                    decoration: BoxDecoration(
+                                                      color: isHovered ? Color(0xffACC7DB) : Colors.transparent,
+                                                      borderRadius: BorderRadius.circular(6),
                                                     ),
-                                                  ],
+                                                    alignment: Alignment.center,
+                                                    width: double.infinity,
+                                                    height: 40,
+                                                    child: Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 40,
+                                                          child: Align(
+                                                            alignment: Alignment.center,
+                                                            child: _buildFilterIcon(filterType: value),
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          value,
+                                                          style: style.cellTextStyle,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                            .toList(),
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            if (value!.toLowerCase().contains('clear')) {
-                                              widget.stateManager
-                                                  .removeColumnsInFilterRows(widget.stateManager.columns);
-                                            } else
-                                              _selectedFilter = value;
-                                          });
-                                        },
-                                        icon: SizedBox(),
-                                        hint: _selectedFilter.isEmpty
-                                            ? SvgPicture.string(
-                                                filterIcon,
-                                                width: 24,
-                                                height: 12,
-                                                fit: BoxFit.contain,
-                                                color: isfilterMenuOpen ? Color(0xff045692) : Color(0xFFC7C7C7),
-                                              )
-                                            : _buildFilterIcon(),
-                                        itemPadding: EdgeInsets.zero,
-                                        dropdownMaxHeight: 300,
-                                        dropdownWidth: 200,
-                                        dropdownDecoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(6),
-                                          color: Colors.white,
-                                        ),
-                                        scrollbarRadius: const Radius.circular(1.5),
-                                        scrollbarThickness: 3,
-                                        scrollbarAlwaysShow: true,
-                                      ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        if (value!.toLowerCase().contains('clear')) {
+                                          widget.stateManager.removeColumnsInFilterRows(widget.stateManager.columns);
+                                          // _selectedFilter = '';
+                                          _controller.clear();
+                                        } else
+                                          _selectedFilter = value;
+                                        if (_controller.text.isNotEmpty) {
+                                          stateManager.removeColumnsInFilterRows(widget.stateManager.columns);
+                                          _handleOnChanged(_controller.text);
+                                        }
+                                      });
+                                    },
+                                    icon: SizedBox(),
+                                    hint: _selectedFilter.isEmpty
+                                        ? SvgPicture.string(
+                                            filterIcon,
+                                            width: 24,
+                                            height: 12,
+                                            fit: BoxFit.contain,
+                                            color: isfilterMenuOpen ? Color(0xff045692) : Color(0xFFC7C7C7),
+                                          )
+                                        : _buildFilterIcon(),
+                                    itemPadding: EdgeInsets.zero,
+                                    dropdownMaxHeight: 300,
+                                    dropdownWidth: 200,
+                                    dropdownDecoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      color: Colors.white,
                                     ),
+                                    scrollbarRadius: const Radius.circular(1.5),
+                                    scrollbarThickness: 3,
+                                    scrollbarAlwaysShow: true,
                                   ),
                                 ),
                               ),
                             ),
-                            Expanded(
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                child: _selectedFilter.isNotEmpty
-                                    ? TextField(
-                                        focusNode: _focusNode,
-                                        controller: _controller,
-                                        enabled: _enabled,
-                                        style: style.cellTextStyle,
-                                        onTap: _handleOnTap,
-                                        onChanged: _handleOnChanged,
-                                        onEditingComplete: _handleOnEditingComplete,
-                                        decoration: InputDecoration(
-                                          hintText: _enabled
-                                              ? _selectedFilter // widget.column.defaultFilter.title
-                                              : '',
-                                          hintStyle: style.cellTextStyle.copyWith(color: Color(0xFFC7C7C7)),
-                                          filled: false,
-                                          fillColor: _textFieldColor,
-                                          border: _border,
-                                          enabledBorder: _enabledBorder,
-                                          disabledBorder: _disabledBorder,
-                                          focusedBorder: _focusedBorder,
-                                          contentPadding: const EdgeInsets.only(bottom: 10),
-                                        ),
-                                      )
-                                    : SizedBox(),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: _selectedFilter.isNotEmpty
+                                ? TextField(
+                                    focusNode: _focusNode,
+                                    controller: _controller,
+                                    enabled: _enabled,
+                                    style: style.cellTextStyle,
+                                    onTap: _handleOnTap,
+                                    onChanged: _handleOnChanged,
+                                    onEditingComplete: _handleOnEditingComplete,
+                                    decoration: InputDecoration(
+                                      hintText: _enabled
+                                          ? _selectedFilter // widget.column.defaultFilter.title
+                                          : '',
+                                      hintStyle: style.cellTextStyle.copyWith(color: Color(0xFFC7C7C7)),
+                                      filled: false,
+                                      fillColor: _textFieldColor,
+                                      border: _border,
+                                      enabledBorder: _enabledBorder,
+                                      disabledBorder: _disabledBorder,
+                                      focusedBorder: _focusedBorder,
+                                      contentPadding: const EdgeInsets.only(bottom: 10),
+                                    ),
+                                  )
+                                : SizedBox(),
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                ),
         ),
       ),
     );
   }
 }
+
 List<String> filteringTypes = [
   'Equals',
   'Does Not Equal',
@@ -479,8 +476,7 @@ List<String> filteringTypesNumber = [
   'Less Than',
   'Clear All Filters',
 ];
-const String filterIcon =
-    '''<svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+const String filterIcon = '''<svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M3.27891 4.753C3.37034 4.85575 3.42053 4.98998 3.42053 5.12884V9.22047C3.42053 9.46671 3.70826 9.59168 3.87857 9.41857L4.98377 8.11054C5.13167 7.92725 5.21323 7.83652 5.21323 7.65509V5.12976C5.21323 4.99091 5.26433 4.85668 5.35486 4.75391L8.52614 1.20013C8.76367 0.933526 8.58082 0.501221 8.22944 0.501221H0.404303C0.0529335 0.501221 -0.130818 0.932601 0.107611 1.20013L3.27891 4.753Z" fill="#C7C7C7"/>
 </svg>''';
 const String containIcon =
@@ -495,8 +491,7 @@ const String beginsWithIcon =
     '''iVBORw0KGgoAAAANSUhEUgAAABgAAAANCAYAAACzbK7QAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAIWSURBVHgBvdNfSFNxFAfw7/Ruq2uaU6MJIihuEUGRQtswgooiilVUiD0E+RAGEhoRPSYEvdRLhIEP5Uv0UO/2kJFQD/VQYERJQZmzsrX0anO065/5/e13Ni8K80HwwIft7vzuOb977m8uo+VONwrE3OPOgvnVwgBc11dZ0421NdBR7StBtKkO3+JTePY+5lxzXKUd15P0in7KtZdCdJBmqZ/erWigivdc2I9UehY7uh5ibCKZS7XRSbKomErpM4Wl2U26LPk5ukFX6ba6uShXpXXvNnyNT8P0unGMzZbFMPmojM5TkLbLZxc9oQry01O6Jt91g5rKTYgEq9HTP4ThHxM4HW5Y3qBCCitnaYw+0T6pcU/WLdApCtB4fkTRpnok0zaef4hha7mJS0d3obaqFKOJf7kGauft5JKbLRlVpeQTjs38F8g/QUtzABvcBnovHsCJPfXY6DFwaGet8wlGKAI998Py+GqnccnXONaqdZ2yARjhoB+hgB8DQ6P4Mm5lV7iLi3Am0oAHLz46NxKS70fIlF0PUAp65iPqVuqTUd3NNmhtDiKTyaDj/iBiMpLJmTSuRBvRWLcFb3RR9TJfSwNV8CU9kkIddAv6IKhQZ/yc5OCqauvNbDY9+P4nP2+UmV74SjyYStlI9LWr01OOpbDpN807flP/k93Qx/Qt/c0lDCtpDxL0+9MxPWNnSViiUPwS6x+LcmyRq6yZ/T4AAAAASUVORK5CYII=''';
 const String endWithIcon =
     '''iVBORw0KGgoAAAANSUhEUgAAABgAAAANCAYAAACzbK7QAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAImSURBVHgBrdLfS5NRGAfw7zvf0Spm20icMkuwBlEx+kFaVzMwKEpCWj+uEqFfF9WVdOk/EAiLIgrBi26lmwKVwggv6qblTT8u1ClSZFuuba45t/f0Pdt551H0Sh/4sL3ned/zHJ7zGNhE1ESi3YYhmjfKFwvWoIlNhAHjOn/CG+VNE+/0Ao10gaZpVFvvpAbteYHG6Yd82OasQes+P9oPB7BcsjAci+PT1O91C94mQYsU0NZfqnW5cVr9/05eM/JorP9VTFiWJRayeTGfzgkZD16MC/NyVJiX+sMObaNrNEU76Pya4t/khlRL3RSkA0da6nDvXAhDHyZR1/MMgRsDGP48g97Oo6j37Ky0SW3QRKeol25RhJ5qBXxqYxlXaY6+dp1ogcMw8GRkopywhEDk4Wu4nCZSuaVVBWSfs/SG6uk+7aUZla9VhQ3aTyly+72VUyaz+epJ8sulMjvsFl0hFz2ni7SdzmAl4nSS2tS6n7rmktlyMuBzV19sC/px92wIbpezWsD+8C19pBGaVG0ytIO0KvJ+5D0lBse+ILdUZM+PIdjoxcEmHwbudOBmxyEsForVolGSDdujnbiPMnQcK1Nkk1P2XhaVU9TzeFQk0v+EHbOJjDjdN1SdInlCjxLXCuxCZWpS6tmj5Qr0i0qyAAwRbuBdhJp3o1gSiE3PI5lRd2KV2k21SQqr469ix9q8apw1AcuBn39yNKslKp3lgK3/3VbGf7+ovf//YqvlAAAAAElFTkSuQmCC''';
-const String greaterThanIcon =
-    '''<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+const String greaterThanIcon = '''<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <clipPath id="clip0_1798_110568">
 <rect width="12" height="12" fill="white"/>
@@ -506,8 +501,7 @@ const String greaterThanIcon =
 <path d="M0 12L12 7.5127V4.4873L0 0V3.31445L8.76762 5.99023L0 8.66602V12Z" fill="#4F4F4F"/>
 </g>
 </svg>''';
-const String lessThanIcon =
-    '''
+const String lessThanIcon = '''
 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <clipPath id="clip0_1798_110570">
