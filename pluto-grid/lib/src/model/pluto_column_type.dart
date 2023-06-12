@@ -224,11 +224,9 @@ extension PlutoColumnTypeExtension on PlutoColumnType {
 
   bool get hasFormat => this is PlutoColumnTypeHasFormat;
 
-  bool get applyFormatOnInit =>
-      hasFormat ? (this as PlutoColumnTypeHasFormat).applyFormatOnInit : false;
+  bool get applyFormatOnInit => hasFormat ? (this as PlutoColumnTypeHasFormat).applyFormatOnInit : false;
 
-  dynamic applyFormat(dynamic value) =>
-      hasFormat ? (this as PlutoColumnTypeHasFormat).applyFormat(value) : value;
+  dynamic applyFormat(dynamic value) => hasFormat ? (this as PlutoColumnTypeHasFormat).applyFormat(value) : value;
 }
 
 class PlutoColumnTypeText implements PlutoColumnType {
@@ -255,9 +253,7 @@ class PlutoColumnTypeText implements PlutoColumnType {
   }
 }
 
-class PlutoColumnTypeNumber
-    with PlutoColumnTypeWithNumberFormat
-    implements PlutoColumnType, PlutoColumnTypeHasFormat<String> {
+class PlutoColumnTypeNumber with PlutoColumnTypeWithNumberFormat implements PlutoColumnType, PlutoColumnTypeHasFormat<String> {
   @override
   final dynamic defaultValue;
 
@@ -299,9 +295,7 @@ class PlutoColumnTypeNumber
   }
 }
 
-class PlutoColumnTypeCurrency
-    with PlutoColumnTypeWithNumberFormat
-    implements PlutoColumnType, PlutoColumnTypeHasFormat<String?> {
+class PlutoColumnTypeCurrency with PlutoColumnTypeWithNumberFormat implements PlutoColumnType, PlutoColumnTypeHasFormat<String?> {
   @override
   final dynamic defaultValue;
 
@@ -351,8 +345,7 @@ class PlutoColumnTypeCurrency
   late final int decimalPoint;
 }
 
-class PlutoColumnTypeSelect
-    implements PlutoColumnType, PlutoColumnTypeHasPopupIcon {
+class PlutoColumnTypeSelect implements PlutoColumnType, PlutoColumnTypeHasPopupIcon {
   @override
   final dynamic defaultValue;
 
@@ -386,12 +379,7 @@ class PlutoColumnTypeSelect
   }
 }
 
-class PlutoColumnTypeDate
-    implements
-        PlutoColumnType,
-        PlutoColumnTypeHasFormat<String>,
-        PlutoColumnTypeHasDateFormat,
-        PlutoColumnTypeHasPopupIcon {
+class PlutoColumnTypeDate implements PlutoColumnType, PlutoColumnTypeHasFormat<String>, PlutoColumnTypeHasDateFormat, PlutoColumnTypeHasPopupIcon {
   @override
   final dynamic defaultValue;
 
@@ -477,8 +465,7 @@ class PlutoColumnTypeDate
   }
 }
 
-class PlutoColumnTypeTime
-    implements PlutoColumnType, PlutoColumnTypeHasPopupIcon {
+class PlutoColumnTypeTime implements PlutoColumnType, PlutoColumnTypeHasPopupIcon {
   @override
   final dynamic defaultValue;
 
@@ -563,7 +550,15 @@ mixin PlutoColumnTypeWithNumberFormat {
   }
 
   int compare(dynamic a, dynamic b) {
-    return _compareWithNull(a, b, () => a.compareTo(b));
+    try {
+      a = a.toString().replaceAll(',', '');
+      b = b.toString().replaceAll(',', '');
+      final aInt = int.parse(a);
+      final bInt = int.parse(b);
+      return _compareWithNull(aInt, bInt, () => aInt.compareTo(bInt));
+    } catch (e) {
+      return _compareWithNull(a, b, () => a.compareTo(b));
+    }
   }
 
   dynamic makeCompareValue(dynamic v) {
@@ -591,9 +586,7 @@ mixin PlutoColumnTypeWithNumberFormat {
       match += numberFormat.symbols.MINUS_SIGN;
     }
 
-    formatted = formatted
-        .replaceAll(RegExp('[^$match]'), '')
-        .replaceFirst(numberFormat.symbols.DECIMAL_SEP, '.');
+    formatted = formatted.replaceAll(RegExp('[^$match]'), '').replaceFirst(numberFormat.symbols.DECIMAL_SEP, '.');
 
     final num formattedNumber = num.tryParse(formatted) ?? 0;
 
